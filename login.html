@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17314d">
+  <meta name="description" content="CivicBridge community service request portal login - educational prototype">
+  <title>Sign in | CivicBridge</title>
+  <style>
+    :root {--navy:#17314d;--deep:#112b44;--teal:#0f8f91;--teal-dark:#0a7679;--ink:#1e3045;--muted:#64768a;--line:#dbe5ee;--surface:#f5f8fb;--error:#b42318;--white:#fff}
+    * {box-sizing:border-box}
+    html,body {min-height:100%;margin:0}
+    body {font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);background:var(--surface);font-size:14px;-webkit-font-smoothing:antialiased}
+    a {color:inherit}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #67d9d2;outline-offset:2px}
+    .layout{display:grid;grid-template-columns:minmax(375px,1.04fr) minmax(420px,1fr);min-height:100vh}
+    .story {background:linear-gradient(150deg,#12304a 0%,#1a435c 48%,#126b72 100%);position:relative;color:#fff;overflow:hidden;padding:42px clamp(32px,5vw,88px) 38px;display:flex;flex-direction:column;min-height:680px}
+    .story:before,.story:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(180,243,236,.15);pointer-events:none}
+    .story:before{width:610px;height:610px;right:-280px;top:120px;box-shadow:0 0 0 67px rgba(255,255,255,.025),0 0 0 140px rgba(255,255,255,.022)}
+    .story:after{width:290px;height:290px;left:-195px;bottom:85px;box-shadow:0 0 0 60px rgba(255,255,255,.016)}
+    .brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}
+    .brand-mark{background:#26b7b1;height:44px;width:44px;border-radius:12px;display:grid;place-items:center;box-shadow:0 10px 24px #082c3c44;flex-shrink:0}
+    .brand-text strong{font-size:24px;letter-spacing:-.7px;display:block;line-height:1.1}
+    .brand-text small{font-size:9px;letter-spacing:1.75px;font-weight:800;color:#b5d8dc;display:block;margin-top:6px}
+    .story-center{margin:auto 0;position:relative;z-index:1;padding-top:50px;padding-bottom:20px;max-width:540px}
+    .eyebrow{color:#8fe2dc;letter-spacing:2.3px;text-transform:uppercase;font-size:11px;font-weight:800;margin-bottom:22px}
+    .story h1{font-size:clamp(40px,4.3vw,64px);line-height:1.12;letter-spacing:-2.4px;font-weight:800;max-width:565px;margin:0 0 22px}
+    .story h1 em{font-style:normal;color:#68d4ca}
+    .story-center>p{font-size:16px;line-height:1.78;color:#c8dce4;margin:0 0 39px;max-width:455px}
+    .features{display:grid;gap:24px}
+    .feature{display:flex;align-items:flex-start;gap:14px;max-width:460px}
+    .feature-ico{background:#ffffff19;border:1px solid #ffffff24;width:43px;height:43px;display:grid;place-items:center;border-radius:12px;flex-shrink:0;color:#a0f0e7}
+    .feature strong{display:block;font-size:14px;margin:2px 0 4px;font-weight:730}
+    .feature span{display:block;color:#c1d5df;font-size:12.5px;line-height:1.55}
+    .story-footer{color:#a7c3cf;font-size:11px;position:relative;z-index:1;display:flex;gap:18px;flex-wrap:wrap}
+    .panel{display:flex;align-items:center;justify-content:center;background:#f7f9fc;padding:55px clamp(24px,5vw,96px)}
+    .panel-inner{max-width:450px;width:100%;}
+    .topline{display:flex;align-items:center;gap:9px;color:#207b79;font-size:12px;font-weight:750;margin-bottom:28px}
+    .topline .dot{width:8px;height:8px;background:#2aa89d;border-radius:50%;box-shadow:0 0 0 5px #e1f7f2}
+    .panel h2{font-size:32px;line-height:1.17;letter-spacing:-1.2px;margin:0 0 10px;font-weight:790;color:#19314a}
+    .subtitle{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 28px}
+    .account-label{display:block;font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#8293a5;font-weight:800;margin-bottom:11px}
+    .role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:26px}
+    .role-tab{background:white;border:1.5px solid var(--line);border-radius:11px;display:flex;align-items:center;gap:11px;padding:13px 12px;text-align:left;color:#465c70;min-height:64px;transition:.16s}
+    .role-tab svg{color:#6d8799}
+    .role-tab strong{font-size:12.5px;display:block}
+    .role-tab small{font-size:10px;color:#8493a2;display:block;margin-top:3px}
+    .role-tab[aria-selected="true"]{border-color:#1e9998;background:#eefaf8;box-shadow:0 0 0 2px #c9f0ea}
+    .role-tab[aria-selected="true"] svg{color:#0b8e88}
+    .input-wrap{margin-bottom:19px}
+    .field-label{display:block;color:#30485d;font-size:12.5px;font-weight:750;margin-bottom:9px}
+    .input-shell{position:relative}
+    .field-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8498aa;pointer-events:none;display:flex}
+    .input-shell input{height:51px;background:white;border:1.5px solid #d8e2e9;border-radius:10px;width:100%;padding:0 44px;font-size:13px;color:#20364c;box-shadow:0 2px 4px #13344b05}
+    .input-shell input::placeholder{color:#a1adba}
+    .input-shell input:focus{border-color:#159a96;outline:3px solid #d9f5f0;outline-offset:1px}
+    .eye-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);height:37px;width:37px;border:0;background:transparent;color:#637c8f;display:grid;place-items:center;border-radius:7px}
+    .eye-btn:hover{background:#f2f6f9;color:#1b5c66}
+    .options{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 21px}
+    .remember{display:inline-flex;gap:8px;align-items:center;color:#51687c;font-size:12px;cursor:pointer}
+    .remember input{height:16px;width:16px;accent-color:#0e9090}
+    .text-btn{color:#117b7e;border:0;background:transparent;padding:4px 0;font-size:12px;font-weight:730}
+    .text-btn:hover{text-decoration:underline}
+    .error{display:none;border:1px solid #f0beb7;background:#fff3f1;color:#a12118;padding:11px 13px;border-radius:9px;font-size:12px;line-height:1.6;margin:0 0 16px}
+    .error.show{display:block}
+    .signin{width:100%;height:51px;background:#0f8f91;border:0;border-radius:10px;color:white;font-size:13.5px;font-weight:760;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 7px 15px #0b7d791f}
+    .signin:hover{background:#08787a}
+    .signin:disabled{opacity:.6;cursor:wait}
+    .demo{margin-top:25px;padding:17px 18px;background:#e9f5f5;border:1px solid #cae8e5;border-radius:12px}
+    .demo-head{display:flex;align-items:center;gap:8px;color:#1e686b;font-size:12px;font-weight:800;margin-bottom:6px}
+    .demo p{margin:0;color:#52747a;font-size:11.5px;line-height:1.55}
+    .demo-link{padding:0;border:0;background:none;color:#087e80;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    .bottomline{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:25px;font-size:11px;color:#8392a3}
+    .bottomline svg{color:#7b9b9f}
+    .message{display:none;margin-top:10px;padding:13px 14px;border-radius:10px;border:1px solid #cbdce7;background:#eef4f9;color:#3a596b;font-size:12px;line-height:1.6}
+    .message.show{display:block}
+    .panel-footer{margin-top:36px;text-align:center;color:#97a5b2;font-size:10px;line-height:1.6}
+    @media(max-width:1000px){.layout{grid-template-columns:minmax(310px,.92fr) minmax(390px,1fr)}.story{padding:34px}.story h1{font-size:43px}}
+    @media(max-width:760px){.layout{grid-template-columns:1fr}.story{min-height:unset;padding:25px 24px 26px}.story-center{padding:36px 0 18px;margin:0}.story h1{font-size:35px;letter-spacing:-1.2px;margin-bottom:12px}.story-center>p{font-size:13px;margin-bottom:17px}.features{display:none}.story-footer{font-size:10px}.panel{padding:35px 22px 45px;align-items:start}.panel h2{font-size:29px}.topline{margin-bottom:20px}.role-tabs{gap:7px}.role-tab{min-height:60px;padding:10px 8px;gap:7px}.role-tab svg{width:19px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+ <div class="layout">
+  <section class="story" aria-label="About CivicBridge">
+    <div class="brand">
+      <div class="brand-mark"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18M5 10v10m5-10v10m4-10v10m5-10v10M2 21h20M12 2 2 8h20z"/></svg></div>
+      <div class="brand-text"><strong>CivicBridge</strong><small>COMMUNITY CONNECTED</small></div>
+    </div>
+    <div class="story-center">
+      <div class="eyebrow">YOUR CITY. YOUR VOICE.</div>
+      <h1>A stronger community <em>starts here.</em></h1>
+      <p>Report community concerns, follow their progress, and connect with your local government—all in one place.</p>
+      <div class="features">
+        <div class="feature"><div class="feature-ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 8 4v5c0 4-3.5 7-8 9-4.5-2-8-5-8-9V7z"/><path d="m8.5 12 2.5 2.5 4.8-5.1"/></svg></div><div><strong>Simple service requests</strong><span>Report road damage, streetlights, and neighborhood issues in minutes.</span></div></div>
+        <div class="feature"><div class="feature-ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg></div><div><strong>Progress you can follow</strong><span>See what's open, being worked on, and resolved without making a phone call.</span></div></div>
+        <div class="feature"><div class="feature-ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19V5h14v14zM8 9h8M8 13h8M8 17h5"/></svg></div><div><strong>One shared workspace</strong><span>Residents stay informed while staff organize and respond to incoming work.</span></div></div>
+      </div>
+    </div>
+    <div class="story-footer"><span>Built for better community service</span><span>Educational software prototype</span></div>
+  </section>
+  <main class="panel">
+   <div class="panel-inner">
+     <div class="topline"><span class="dot" aria-hidden="true"></span> COMMUNITY SERVICE PORTAL</div>
+     <h2>Welcome back</h2>
+     <p class="subtitle">Sign in to manage your service requests and stay connected with your community.</p>
+     <span class="account-label">I'M SIGNING IN AS</span>
+     <div class="role-tabs" role="tablist" aria-label="Account type">
+       <button type="button" class="role-tab" role="tab" id="resident-tab" aria-selected="true" aria-controls="login-form" data-role="resident">
+         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+         <span><strong>Resident</strong><small>Community member</small></span>
+       </button>
+       <button type="button" class="role-tab" role="tab" id="staff-tab" aria-selected="false" aria-controls="login-form" data-role="staff">
+         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18M5 10v10m5-10v10m4-10v10m5-10v10M2 21h20M12 2 2 8h20z"/></svg>
+         <span><strong>City Employee</strong><small>Staff workspace</small></span>
+       </button>
+     </div>
+     <form id="login-form" novalidate>
+       <div class="input-wrap"><label class="field-label" for="email">Email address</label>
+         <div class="input-shell"><span class="field-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><input type="email" id="email" name="email" autocomplete="username" placeholder="you@example.com" required></div>
+       </div>
+       <div class="input-wrap"><label class="field-label" for="password">Password</label>
+         <div class="input-shell"><span class="field-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password" required minlength="8"><button class="eye-btn" id="toggle-password" type="button" aria-label="Show password" aria-pressed="false"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+       </div>
+       <div class="options"><label class="remember"><input type="checkbox" id="remember">Remember my email</label><button type="button" id="forgot" class="text-btn">Forgot password?</button></div>
+       <div class="error" id="login-error" role="alert" aria-live="polite"></div>
+       <button type="submit" class="signin">Sign in to CivicBridge <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+     </form>
+     <div class="message" id="help-message" role="status"></div>
+     <div class="demo">
+       <div class="demo-head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg> CLASS PROJECT DEMO</div>
+       <p>Use the sample <span id="role-desc">resident</span> account to explore the wireframes. <button type="button" class="demo-link" id="fill-demo">Fill in demo credentials</button>. No real account is needed.</p>
+     </div>
+     <div class="bottomline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 4v6c0 5-4 8-9 10-5-2-9-5-9-10V6z"/><path d="m8 12 3 3 5-6"/></svg> Prototype demonstration — not a production login service</div>
+     <div class="panel-footer">CivicBridge · School software development project<br>For emergencies, please contact emergency services directly.</div>
+   </div>
+  </main>
+ </div>
+ <script>
+ (function(){
+   'use strict';
+   const accounts={resident:{email:'resident@civicbridge.demo',password:'Demo123!',view:'resident'},staff:{email:'staff@civicbridge.demo',password:'Demo123!',view:'staff'}};
+   let role='resident';
+   const byId=(id)=>document.getElementById(id);
+   const error=byId('login-error');
+   const msg=byId('help-message');
+   const email=byId('email');
+   const password=byId('password');
+   const hideMsg=()=>{error.classList.remove('show');error.textContent='';msg.classList.remove('show');msg.textContent='';};
+   function setRole(next){role=next;document.querySelectorAll('.role-tab').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.role===next)));byId('role-desc').textContent=next==='resident'?'resident':'employee';hideMsg();if(email.value.endsWith('@civicbridge.demo')){email.value='';password.value='';}}
+   document.querySelectorAll('.role-tab').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.role)));
+   byId('fill-demo').addEventListener('click',()=>{email.value=accounts[role].email;password.value=accounts[role].password;hideMsg();email.focus();});
+   byId('toggle-password').addEventListener('click',()=>{const show=password.type==='password';password.type=show?'text':'password';byId('toggle-password').setAttribute('aria-pressed',String(show));byId('toggle-password').setAttribute('aria-label',show?'Hide password':'Show password');});
+   byId('forgot').addEventListener('click',()=>{hideMsg();msg.textContent='Password reset is a planned feature. This classroom prototype uses sample accounts only. Select “Fill in demo credentials” to continue.';msg.classList.add('show');});
+   byId('login-form').addEventListener('submit',e=>{e.preventDefault();hideMsg();const address=email.value.trim().toLowerCase();const pw=password.value;
+     if(!address || !email.checkValidity()){error.textContent='Please enter a valid email address.';error.classList.add('show');email.focus();return;}
+     if(!pw){error.textContent='Please enter your password.';error.classList.add('show');password.focus();return;}
+     const a=accounts[role];
+     if(address!==a.email || pw!==a.password){error.textContent='Those demo credentials do not match the selected account type. Use “Fill in demo credentials” to try the sample account.';error.classList.add('show');return;}
+     try{if(byId('remember').checked){localStorage.setItem('civicbridgeDemoRememberEmail',address);}else{localStorage.removeItem('civicbridgeDemoRememberEmail');}}catch(e){}
+     try{sessionStorage.setItem('civicbridgeDemoSession',JSON.stringify({role:role,email:address}));}catch(e){}
+     window.location.assign('CivicBridge_App_Demo.html?view='+encodeURIComponent(a.view));
+   });
+   let saved=null;try{saved=localStorage.getItem('civicbridgeDemoRememberEmail')}catch(e){};if(saved&&Object.values(accounts).some(a=>a.email===saved)){if(saved===accounts.staff.email)setRole('staff');email.value=saved;byId('remember').checked=true;}
+ })();
+ </script>
+</body></html>
