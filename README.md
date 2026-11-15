@@ -1,7 +1,5 @@
 # CivicBridge Login Page — School Project
 
-This folder contains a finished login page and a connected high-fidelity CivicBridge demonstration.
-
 ## Files
 - `login.html`: Responsive login interface (resident and employee tabs).
 - `CivicBridge_App_Demo.html`: Existing six-screen CivicBridge prototype, launched by the login page.
