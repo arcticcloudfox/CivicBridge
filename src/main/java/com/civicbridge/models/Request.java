@@ -35,6 +35,14 @@ public class Request {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private RequestCategory category;
+
     @OneToMany(mappedBy = "request")
     private List<StatusHistory> statusHistory = new ArrayList<>();
 

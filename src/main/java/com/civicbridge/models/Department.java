@@ -26,5 +26,5 @@ public class Department {
     private boolean isActive;
     
     @OneToMany(mappedBy = "department")
-    private List<Request> requests = new ArrayList<>();
+    private List<Request> request = new ArrayList<>();
 }
