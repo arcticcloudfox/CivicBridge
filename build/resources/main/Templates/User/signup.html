@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17314d">
+    <title>Create Account | CivicBridge</title>
+
+    <style>
+        :root {
+        --navy: #17314d;
+        --deep: #112b44;
+        --teal: #0f8f91;
+        --teal-dark: #0a7679;
+        --ink: #1e3045;
+        --muted: #64768a;
+        --line: #dbe5ee;
+        --surface: #f5f8fb;
+        --error: #b42318;
+        --white: #fff;
+        }
+        * {
+        box-sizing: border-box;
+        }
+        html, body {
+            min-height: 100%;
+            margin: 0;
+        }
+                body {
+            font-family: Inter, ui-sans-serif, system-ui,
+                -apple-system, 'Segoe UI', Arial, sans-serif;
+            color: var(--ink);
+            background: var(--surface);
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #67d9d2;
+            outline-offset: 2px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(375px, 1fr) minmax(420px, 1fr);
+            min-height: 100vh;
+        }
+
+        /* LEFT PANEL */
+
+        .story {
+            background: linear-gradient(
+                150deg,
+                #12304a 0%,
+                #1a435c 48%,
+                #126b72 100%
+            );
+
+            position: relative;
+            color: white;
+            overflow: hidden;
+            padding: 42px clamp(32px, 5vw, 88px) 38px;
+            display: flex;
+            flex-direction: column;
+            min-height: 680px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-mark {
+            background: #26b7b1;
+            height: 44px;
+            width: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .brand-text strong {
+            font-size: 24px;
+            letter-spacing: -.7px;
+            display: block;
+        }
+
+        .brand-text small {
+            font-size: 9px;
+            letter-spacing: 1.75px;
+            font-weight: 800;
+            color: #b5d8dc;
+            display: block;
+            margin-top: 6px;
+        }
+
+        .story-center {
+            margin: auto 0;
+            position: relative;
+            z-index: 1;
+            padding-top: 50px;
+            padding-bottom: 20px;
+            max-width: 540px;
+        }
+
+        .eyebrow {
+            color: #8fe2dc;
+            letter-spacing: 2.3px;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 22px;
+        }
+
+        .story h1 {
+            font-size: clamp(40px, 4.3vw, 64px);
+            line-height: 1.12;
+            letter-spacing: -2.4px;
+            font-weight: 800;
+            margin: 0 0 22px;
+        }
+
+        .story h1 em {
+            font-style: normal;
+            color: #68d4ca;
+        }
+
+        .story-center > p {
+            font-size: 16px;
+            line-height: 1.78;
+            color: #c8dce4;
+            margin: 0;
+            max-width: 455px;
+        }
+
+        .story-footer {
+            color: #a7c3cf;
+            font-size: 11px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* RIGHT PANEL */
+
+        .panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f9fc;
+            padding: 45px clamp(24px, 5vw, 96px);
+        }
+
+        .panel-inner {
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .topline {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #207b79;
+            font-size: 12px;
+            font-weight: 750;
+            margin-bottom: 22px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #2aa89d;
+            border-radius: 50%;
+        }
+
+        .panel h2 {
+            font-size: 32px;
+            line-height: 1.17;
+            letter-spacing: -1.2px;
+            margin: 0 0 10px;
+            color: #19314a;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin: 0 0 25px;
+        }
+
+        /* FORM FIELDS */
+
+        .input-wrap {
+            margin-bottom: 17px;
+        }
+
+        .field-label {
+            display: block;
+            color: #30485d;
+            font-size: 12.5px;
+            font-weight: 750;
+            margin-bottom: 8px;
+        }
+
+        .input-shell {
+            position: relative;
+        }
+
+        .input-shell input {
+            height: 48px;
+            background: white;
+            border: 1.5px solid #d8e2e9;
+            border-radius: 10px;
+            width: 100%;
+            padding: 0 43px 0 14px;
+            font-size: 13px;
+            color: #20364c;
+        }
+
+        .input-shell input::placeholder {
+            color: #a1adba;
+        }
+
+        .input-shell input:focus {
+            border-color: #159a96;
+            outline: 3px solid #d9f5f0;
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 34px;
+            width: 34px;
+            border: 0;
+            background: transparent;
+            color: #637c8f;
+            border-radius: 7px;
+        }
+
+        .eye-btn:hover {
+            background: #f2f6f9;
+        }
+
+        .name-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ERRORS */
+
+        .error {
+            border: 1px solid #f0beb7;
+            background: #fff3f1;
+            color: #a12118;
+            padding: 11px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 17px;
+        }
+
+        .error:empty {
+            display: none;
+        }
+
+        /* BUTTONS */
+
+        .signup-btn {
+            width: 100%;
+            height: 51px;
+            background: #0f8f91;
+            border: 0;
+            border-radius: 10px;
+            color: white;
+            font-size: 13.5px;
+            font-weight: 760;
+            margin-top: 5px;
+            box-shadow: 0 7px 15px #0b7d791f;
+        }
+
+        .signup-btn:hover {
+            background: #08787a;
+        }
+
+        .bottomline {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 22px;
+            font-size: 12px;
+            color: #8392a3;
+        }
+
+        .bottomline a {
+            color: #117b7e;
+            font-weight: 750;
+            text-decoration: none;
+        }
+
+        .bottomline a:hover {
+            text-decoration: underline;
+        }
+
+        .panel-footer {
+            margin-top: 27px;
+            text-align: center;
+            color: #97a5b2;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        @media(max-width: 760px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .story {
+                min-height: unset;
+                padding: 25px 24px;
+            }
+
+            .story-center {
+                padding: 30px 0 20px;
+                margin: 0;
+            }
+
+            .story h1 {
+                font-size: 35px;
+                letter-spacing: -1.2px;
+            }
+
+            .story-center > p {
+                font-size: 13px;
+            }
+
+            .panel {
+                padding: 35px 22px 45px;
+                align-items: start;
+            }
+
+            .panel h2 {
+                font-size: 29px;
+            }
+        }
+
+        @media(max-width: 380px) {
+            .name-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media(prefers-reduced-motion: reduce) {
+            *, *:before, *:after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <!-- LEFT BRANDING PANEL -->
+    <section class="story">
+        <div class="brand">
+        <div class="brand-mark">C</div>
+        <div class="brand-text">
+            <strong>CivicBridge</strong>
+            <small>COMMUNITY CONNECTED</small>
+        </div>
+        </div>
+        <div class="story-center">
+            <div class="eyebrow">JOIN YOUR COMMUNITY</div>
+            <h1>
+                Make your voice
+                <em>matter.</em>
+            </h1>
+            <p>
+                Create your CivicBridge account and become part of a stronger, more connected
+                community. Report concerns, follow service requests, and stay informed about
+                your neighborhood.
+            </p>
+        </div>
+        <div class="story-footer">
+            Built for better community service<br>
+            Educational software prototype
+        </div>
+    </section>
+    <!-- SIGNUP FORM PANEL -->
+    <main class="panel">
+        <div class="panel-inner">
+            <div class="topline">
+                <span class="dot"></span>
+                COMMUNITY SERVICE PORTAL
+            </div>
+            <h2>Create your account</h2>
+            <p class="subtitle">
+                Join CivicBridge to connect with your local government and community.
+            </p>
+            <!-- SPRING BOOT SIGNUP FORM -->
+            <form action="/signup" method="POST" id="signup-form">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+                <div class="name-row">
+                    <div class="input-wrap">
+                        <label class="field-label" for="firstName">
+                            First name
+                        </label>
+                        <div class="input-shell">
+                            <input type="text"
+                                   id="firstName"
+                                   name="firstName"
+                                   placeholder="First name"
+                                   autocomplete="given-name"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="input-wrap">
+                        <label class="field-label" for="lastName">
+                            Last name
+                        </label>
+                        <div class="input-shell">
+                            <input
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    placeholder="Last name"
+                                    autocomplete="family-name"
+                                    required>
+                            </div>
+                    </div>
+                </div>
+                <div class="input-wrap">
+                    <label class="field-label" for="email">
+                        Email address
+                    </label>
+
+                    <div class="input-shell">
+                        <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+                    </div>
+                </div>
+
+
+                <div class="input-wrap">
+                    <label class="field-label" for="username">
+                        Username
+                    </label>
+
+                    <div class="input-shell">
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Choose a username"
+                                autocomplete="username"
+                                required>
+                    </div>
+                </div>
+
+
+                <div class="input-wrap">
+                    <label class="field-label" for="password">
+                        Password
+                    </label>
+
+                    <div class="input-shell">
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required>
+
+                        <button
+                                class="eye-btn"
+                                type="button"
+                                data-target="password"
+                                aria-label="Show password">
+                            👁
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="input-wrap">
+                    <label class="field-label" for="confirmPassword">
+                        Confirm password
+                    </label>
+
+                    <div class="input-shell">
+                        <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Enter your password again"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required>
+
+                        <button
+                                class="eye-btn"
+                                type="button"
+                                data-target="confirmPassword"
+                                aria-label="Show confirm password">
+                            👁
+                        </button>
+                    </div>
+                </div>
+
+
+                <!-- SERVER AND CLIENT ERROR MESSAGES -->
+
+                <div class="error" id="form-error" role="alert"
+                     aria-live="polite">
+
+                    <span id="error-message"></span>
+
+                </div>
+
+
+                <button type="submit" class="signup-btn">
+                    Create my CivicBridge account →
+                </button>
+
+            </form>
+
+
+            <div class="bottomline">
+                Already have an account?
+
+                <a href="/login">Sign in</a>
+            </div>
+
+
+            <div class="panel-footer">
+                CivicBridge · School software development project<br>
+                For emergencies, please contact emergency services directly.
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    (function() {
+
+        'use strict';
+
+        const password = document.getElementById('password');
+
+        const confirmPassword =
+            document.getElementById('confirmPassword');
+
+        const form = document.getElementById('signup-form');
+
+        const errorMessage =
+            document.getElementById('error-message');
+
+
+        // SHOW/HIDE PASSWORD
+
+        document.querySelectorAll('.eye-btn').forEach(button => {
+
+            button.addEventListener('click', function() {
+
+                const field =
+                    document.getElementById(this.dataset.target);
+
+                const show = field.type === 'password';
+
+                field.type = show ? 'text' : 'password';
+
+                this.setAttribute(
+                    'aria-label',
+                    show ? 'Hide password' : 'Show password'
+                );
+
+            });
+
+        });
+
+
+        // CHECK PASSWORDS BEFORE SUBMITTING
+
+        form.addEventListener('submit', function(event) {
+
+            errorMessage.textContent = '';
+
+            if (password.value.length < 8) {
+
+                event.preventDefault();
+
+                errorMessage.textContent =
+                    'Your password must contain at least 8 characters.';
+
+                password.focus();
+
+                return;
+            }
+
+            if (password.value !== confirmPassword.value) {
+
+                event.preventDefault();
+
+                errorMessage.textContent =
+                    'Your passwords do not match. Please try again.';
+
+                confirmPassword.focus();
+
+            }
+
+        });
+
+
+        // DISPLAY SPRING BOOT REDIRECT ERRORS
+
+        const params = new URLSearchParams(window.location.search);
+
+        const error = params.get('error');
+
+        if (error === 'passwordDidNotMatch') {
+
+            errorMessage.textContent =
+                'Your passwords did not match. Please try again.';
+
+        }
+
+        if (error === 'usernameNotAvailable') {
+
+            errorMessage.textContent =
+                'That username is already taken. Please choose another.';
+
+        }
+
+    })();
+
+</script>
+
+</body>
+</html>
