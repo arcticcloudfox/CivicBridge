@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html land="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>View Civic Bridge Request</title>
+</head>
+<body>
+
+<h1>Civic Bridge Request Details</h1>
+
+<div th:if="${request != null}">
+
+  <h2 th:text="${request.title}">Request Title</h2>
+
+  <p>
+    <strong>Description:</strong>
+    <span th:text="${request.description}"></span>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <span th:text="${request.currentStatus}"></span>
+  </p>
+
+  <p>
+    <strong>Priority:</strong>
+    <span th:text="${request.priority}"></span>
+  </p>
+
+  <p>
+    <strong>Location:</strong>
+    <span th:text="${request.locationAddress}"></span>
+  </p>
+
+  <a th:href="@{/request/{id}/edit(id=${request.id})}">
+    Edit Request
+  </a>
+
+  <form th:action="@{/request/{id}/delete(id=${request.id})}"
+        method="post">
+    <button type="submit">Delete Request</button>
+  </form>
+
+</div>
+
+<a th:href="@{/request}">Back to Requests</a>
+
+</body>
+</html>
